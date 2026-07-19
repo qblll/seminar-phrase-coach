@@ -1,0 +1,14 @@
+node_modules
+.next
+.pnpm-store
+out
+dist
+.env
+.env.*
+.env.local
+*.log
+*.tsbuildinfo
+.git-invalid-backup
+.agents
+.DS_Store
+Thumbs.db
