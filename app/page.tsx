@@ -1,7 +1,7 @@
 "use client";
 
 import { Check, Copy, GraduationCap, Lightbulb } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 const situations = [
   { id: "opinion", label: "Expressing an opinion" },
@@ -371,8 +371,11 @@ export default function Home() {
   const [input, setInput] = useState("");
   const [situation, setSituation] = useState<SituationId>("opinion");
   const [tone, setTone] = useState<ToneId>("natural");
+  const [hasGenerated, setHasGenerated] = useState(false);
+  const [validationError, setValidationError] = useState("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [copyMessage, setCopyMessage] = useState("");
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const suggestions = useMemo(
     () => getSuggestions(input, situation, tone),
@@ -381,6 +384,50 @@ export default function Home() {
 
   const selectedSituation = situations.find((item) => item.id === situation);
   const selectedTone = tones.find((item) => item.id === tone);
+
+  function clearGeneratedResults() {
+    setHasGenerated(false);
+    setCopiedId(null);
+    setCopyMessage("");
+  }
+
+  function handleInputChange(value: string) {
+    setInput(value);
+    if (value.trim().length > 0) {
+      setValidationError("");
+    }
+    if (hasGenerated) {
+      clearGeneratedResults();
+    }
+  }
+
+  function handleSituationChange(nextSituation: SituationId) {
+    setSituation(nextSituation);
+    if (hasGenerated && nextSituation !== situation) {
+      clearGeneratedResults();
+    }
+  }
+
+  function handleToneChange(nextTone: ToneId) {
+    setTone(nextTone);
+    if (hasGenerated && nextTone !== tone) {
+      clearGeneratedResults();
+    }
+  }
+
+  function generateSuggestions() {
+    if (input.trim().length === 0) {
+      setValidationError("Enter a sentence, idea, or rough note before generating suggestions.");
+      clearGeneratedResults();
+      textareaRef.current?.focus();
+      return;
+    }
+
+    setValidationError("");
+    setCopiedId(null);
+    setCopyMessage("");
+    setHasGenerated(true);
+  }
 
   async function copySuggestion(suggestion: Suggestion) {
     try {
@@ -436,12 +483,20 @@ export default function Home() {
             Sentence or idea
           </label>
           <textarea
+            ref={textareaRef}
             id="idea"
             value={input}
-            onChange={(event) => setInput(event.target.value)}
+            onChange={(event) => handleInputChange(event.target.value)}
             placeholder="Type the idea you want to express in the seminar."
+            aria-invalid={validationError.length > 0}
+            aria-describedby={validationError.length > 0 ? "idea-error" : undefined}
             className="mt-2 min-h-32 w-full resize-y rounded-md border border-zinc-300 bg-white px-3 py-3 text-base leading-7 text-zinc-950 shadow-sm placeholder:text-zinc-400"
           />
+          {validationError.length > 0 ? (
+            <p id="idea-error" role="alert" className="mt-2 text-sm font-semibold text-red-700">
+              {validationError}
+            </p>
+          ) : null}
 
           <div className="mt-6">
             <p id="situation-label" className="text-sm font-semibold text-zinc-900">
@@ -461,7 +516,7 @@ export default function Home() {
                     type="button"
                     role="radio"
                     aria-checked={isSelected}
-                    onClick={() => setSituation(item.id)}
+                    onClick={() => handleSituationChange(item.id)}
                     className={`min-h-12 rounded-md border px-3 py-2 text-left text-sm font-semibold transition ${
                       isSelected
                         ? "border-teal-700 bg-teal-700 text-white"
@@ -493,7 +548,7 @@ export default function Home() {
                     type="button"
                     role="radio"
                     aria-checked={isSelected}
-                    onClick={() => setTone(item.id)}
+                    onClick={() => handleToneChange(item.id)}
                     className={`min-h-12 rounded-md border px-3 py-2 text-center text-sm font-semibold transition ${
                       isSelected
                         ? "border-amber-500 bg-amber-400 text-zinc-950"
@@ -506,60 +561,81 @@ export default function Home() {
               })}
             </div>
           </div>
+
+          <div className="mt-6">
+            <p id="prototype-note" className="text-sm leading-6 text-zinc-600">
+              Prototype mode: suggestions currently respond to the selected situation and tone, not
+              the exact meaning of your sentence.
+            </p>
+            <button
+              type="button"
+              onClick={generateSuggestions}
+              aria-describedby="prototype-note"
+              className="mt-3 inline-flex min-h-12 w-full items-center justify-center rounded-md bg-teal-700 px-4 py-3 text-base font-bold text-white transition hover:bg-teal-800 sm:w-auto"
+            >
+              Generate expressions
+            </button>
+          </div>
         </section>
 
         <section aria-labelledby="suggestions-title" className="space-y-4">
           <div className="flex flex-col gap-3 rounded-lg border border-zinc-200 bg-white p-4 shadow-soft sm:flex-row sm:items-center sm:justify-between sm:p-5">
             <div>
               <p className="text-sm font-semibold text-teal-800">
-                {selectedSituation?.label} | {selectedTone?.label}
+                {hasGenerated ? `${selectedSituation?.label} | ${selectedTone?.label}` : "Results"}
               </p>
               <h2 id="suggestions-title" className="mt-1 text-xl font-bold text-zinc-950">
-                Suggested expressions
+                {hasGenerated
+                  ? "Suggested expressions"
+                  : "Your seminar-ready expressions will appear here."}
               </h2>
             </div>
             <p className="max-w-sm text-sm leading-6 text-zinc-600">
-              Each option is ready to copy and adapt in your own voice.
+              {hasGenerated
+                ? "Each option is ready to copy and adapt in your own voice."
+                : "Enter your idea, choose a situation and tone, then generate suggestions."}
             </p>
           </div>
 
-          <div className="space-y-3">
-            {suggestions.map((suggestion, index) => {
-              const isCopied = copiedId === suggestion.id;
+          {hasGenerated ? (
+            <div className="space-y-3">
+              {suggestions.map((suggestion, index) => {
+                const isCopied = copiedId === suggestion.id;
 
-              return (
-                <article
-                  key={suggestion.id}
-                  className="rounded-lg border border-zinc-200 border-l-teal-700 bg-white p-4 shadow-soft"
-                >
-                  <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                    <div>
-                      <p className="text-sm font-bold text-amber-700">Option {index + 1}</p>
-                      <p className="mt-2 text-lg font-semibold leading-7 text-zinc-950">
-                        "{suggestion.expression}"
-                      </p>
+                return (
+                  <article
+                    key={suggestion.id}
+                    className="rounded-lg border border-zinc-200 border-l-teal-700 bg-white p-4 shadow-soft"
+                  >
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                      <div>
+                        <p className="text-sm font-bold text-amber-700">Option {index + 1}</p>
+                        <p className="mt-2 text-lg font-semibold leading-7 text-zinc-950">
+                          "{suggestion.expression}"
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => copySuggestion(suggestion)}
+                        className="inline-flex min-h-10 w-full shrink-0 items-center justify-center gap-2 rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm font-semibold text-zinc-800 transition hover:border-teal-600 hover:bg-teal-50 sm:w-auto"
+                        aria-label={`Copy option ${index + 1}`}
+                      >
+                        {isCopied ? (
+                          <Check aria-hidden="true" size={18} className="text-teal-700" />
+                        ) : (
+                          <Copy aria-hidden="true" size={18} className="text-teal-700" />
+                        )}
+                        {isCopied ? "Copied" : "Copy"}
+                      </button>
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => copySuggestion(suggestion)}
-                      className="inline-flex min-h-10 w-full shrink-0 items-center justify-center gap-2 rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm font-semibold text-zinc-800 transition hover:border-teal-600 hover:bg-teal-50 sm:w-auto"
-                      aria-label={`Copy option ${index + 1}`}
-                    >
-                      {isCopied ? (
-                        <Check aria-hidden="true" size={18} className="text-teal-700" />
-                      ) : (
-                        <Copy aria-hidden="true" size={18} className="text-teal-700" />
-                      )}
-                      {isCopied ? "Copied" : "Copy"}
-                    </button>
-                  </div>
-                  <p className="mt-3 text-sm leading-6 text-zinc-700">
-                    {suggestion.explanation}
-                  </p>
-                </article>
-              );
-            })}
-          </div>
+                    <p className="mt-3 text-sm leading-6 text-zinc-700">
+                      {suggestion.explanation}
+                    </p>
+                  </article>
+                );
+              })}
+            </div>
+          ) : null}
 
           <p role="status" aria-live="polite" className="min-h-6 text-sm font-medium text-teal-800">
             {copyMessage}
