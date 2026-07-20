@@ -5,6 +5,10 @@ An interactive mock prototype designed to help international postgraduate studen
 > **Status: Interactive mock prototype**
 > This version uses predefined suggestion sets based on the selected seminar situation and tone. It does not yet interpret the exact meaning of the user's input and is not connected to a live AI service.
 
+## Live demo
+
+[Open the deployed Seminar Phrase Coach](https://seminar-phrase-coach.vercel.app/)
+
 ## The problem
 
 International postgraduate students may have ideas they want to contribute in English-medium seminars but find it difficult to formulate appropriate spoken English quickly and confidently in the moment.
