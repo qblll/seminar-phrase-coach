@@ -4,6 +4,21 @@
 
 :root {
   color-scheme: light;
+  --color-page: #F4EFE5;
+  --color-surface: #FFFDF8;
+  --color-result-surface: #F1F4F6;
+  --color-text: #172033;
+  --color-muted: #5D6472;
+  --color-accent: #1F3A5F;
+  --color-accent-tint: #E8EEF5;
+  --color-ochre: #8A6A32;
+  --color-ochre-tint: #F3EAD8;
+  --color-border: #D8CCBA;
+  --color-result-border: #C7D1DA;
+  --color-focus: #B7791F;
+  --color-error: #A61B1B;
+  --color-error-border: #C83232;
+  --color-error-bg: #FFF2F0;
 }
 
 * {
@@ -17,8 +32,9 @@ html {
 body {
   min-height: 100%;
   margin: 0;
-  background: #f5f7f4;
-  color: #18181b;
+  background: var(--color-page);
+  color: var(--color-text);
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
 }
 
 button,
@@ -26,8 +42,31 @@ textarea {
   font: inherit;
 }
 
+button {
+  color: inherit;
+}
+
+.font-editorial-serif {
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.font-editorial-sans {
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+}
+
 button:focus-visible,
 textarea:focus-visible {
-  outline: 3px solid #f59e0b;
+  outline: 3px solid var(--color-focus);
   outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }

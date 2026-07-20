@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Copy, GraduationCap, Lightbulb } from "lucide-react";
+import { Check, Copy } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 
 const situations = [
@@ -444,203 +444,263 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-[#f5f7f4]">
-      <header className="border-b border-zinc-200 bg-white">
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-5 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-teal-700 text-white">
-              <GraduationCap aria-hidden="true" size={24} />
+    <main className="min-h-screen bg-[var(--color-page)] text-[var(--color-text)]">
+      <header className="border-b border-[var(--color-border)] bg-[var(--color-surface)]">
+        <div className="mx-auto max-w-6xl px-4 py-5 sm:px-6 lg:px-8">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div className="flex items-start gap-4">
+              <img
+                src="/editorial-mark.svg"
+                alt=""
+                aria-hidden="true"
+                className="mt-1 h-12 w-12 shrink-0"
+              />
+              <div className="max-w-2xl">
+                <p className="text-sm font-semibold text-[var(--color-accent)]">
+                  Seminar Phrase Coach
+                </p>
+                <h1 className="font-editorial-serif mt-1 text-3xl leading-tight text-[var(--color-text)] sm:text-4xl">
+                  Speak up with seminar-ready English
+                </h1>
+              </div>
             </div>
-            <div>
-              <p className="text-sm font-semibold text-teal-800">Seminar Phrase Coach</p>
-              <h1 className="text-2xl font-bold leading-tight text-zinc-950 sm:text-3xl">
-                Speak up with seminar-ready English
-              </h1>
+            <div className="inline-flex w-fit items-center gap-2 border-l-2 border-[var(--color-ochre)] pl-3 text-sm font-semibold text-[var(--color-accent)]">
+              <span
+                aria-hidden="true"
+                className="h-2 w-2 shrink-0 rounded-full bg-[var(--color-ochre)]"
+              />
+              Mock practice mode
             </div>
-          </div>
-          <div className="flex items-center gap-2 rounded-md border border-amber-300 bg-amber-50 px-3 py-2 text-sm font-medium text-zinc-800">
-            <Lightbulb aria-hidden="true" size={18} className="text-amber-600" />
-            Mock practice mode
           </div>
         </div>
       </header>
 
-      <div className="mx-auto grid max-w-6xl gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:px-8">
-        <section
-          aria-labelledby="coach-form-title"
-          className="rounded-lg border border-zinc-200 bg-white p-4 shadow-soft sm:p-5"
-        >
-          <div className="mb-5">
-            <h2 id="coach-form-title" className="text-xl font-bold text-zinc-950">
-              Your seminar moment
-            </h2>
-            <p className="mt-1 text-sm leading-6 text-zinc-600">
-              Chinese, English, or rough notes are fine.
-            </p>
-          </div>
-
-          <label htmlFor="idea" className="block text-sm font-semibold text-zinc-900">
-            Sentence or idea
-          </label>
-          <textarea
-            ref={textareaRef}
-            id="idea"
-            value={input}
-            onChange={(event) => handleInputChange(event.target.value)}
-            placeholder="Type the idea you want to express in the seminar."
-            aria-invalid={validationError.length > 0}
-            aria-describedby={validationError.length > 0 ? "idea-error" : undefined}
-            className="mt-2 min-h-32 w-full resize-y rounded-md border border-zinc-300 bg-white px-3 py-3 text-base leading-7 text-zinc-950 shadow-sm placeholder:text-zinc-400"
-          />
-          {validationError.length > 0 ? (
-            <p id="idea-error" role="alert" className="mt-2 text-sm font-semibold text-red-700">
-              {validationError}
-            </p>
-          ) : null}
-
-          <div className="mt-6">
-            <p id="situation-label" className="text-sm font-semibold text-zinc-900">
-              Seminar situation
-            </p>
-            <div
-              role="radiogroup"
-              aria-labelledby="situation-label"
-              className="mt-2 grid gap-2 sm:grid-cols-2"
-            >
-              {situations.map((item) => {
-                const isSelected = item.id === situation;
-
-                return (
-                  <button
-                    key={item.id}
-                    type="button"
-                    role="radio"
-                    aria-checked={isSelected}
-                    onClick={() => handleSituationChange(item.id)}
-                    className={`min-h-12 rounded-md border px-3 py-2 text-left text-sm font-semibold transition ${
-                      isSelected
-                        ? "border-teal-700 bg-teal-700 text-white"
-                        : "border-zinc-300 bg-white text-zinc-800 hover:border-teal-500 hover:bg-teal-50"
-                    }`}
-                  >
-                    {item.label}
-                  </button>
-                );
-              })}
+      <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
+        <div className="grid overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface)] lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:divide-x lg:divide-[var(--color-result-border)]">
+          <section
+            aria-labelledby="coach-form-title"
+            className="bg-[var(--color-surface)] p-4 sm:p-6 lg:p-7"
+          >
+            <div className="mb-5 border-b border-[var(--color-border)] pb-4">
+              <h2
+                id="coach-form-title"
+                className="font-editorial-serif text-2xl leading-tight text-[var(--color-text)]"
+              >
+                Your seminar moment
+              </h2>
+              <p className="mt-2 text-sm leading-6 text-[var(--color-muted)]">
+                Chinese, English, or rough notes are fine.
+              </p>
             </div>
-          </div>
 
-          <div className="mt-6">
-            <p id="tone-label" className="text-sm font-semibold text-zinc-900">
-              Tone
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-ochre)]">
+              1 Write
             </p>
-            <div
-              role="radiogroup"
-              aria-labelledby="tone-label"
-              className="mt-2 grid gap-2 sm:grid-cols-3"
+            <label
+              htmlFor="idea"
+              className="mt-3 block text-sm font-semibold text-[var(--color-text)]"
             >
-              {tones.map((item) => {
-                const isSelected = item.id === tone;
+              Sentence or idea
+            </label>
+            <textarea
+              ref={textareaRef}
+              id="idea"
+              value={input}
+              onChange={(event) => handleInputChange(event.target.value)}
+              placeholder="Type the idea you want to express in the seminar."
+              aria-invalid={validationError.length > 0}
+              aria-describedby={validationError.length > 0 ? "idea-error" : undefined}
+              className={`mt-2 min-h-36 w-full resize-y rounded-[4px] border bg-[var(--color-surface)] px-3 py-3 text-base leading-7 text-[var(--color-text)] placeholder:text-[#7A7268] ${
+                validationError.length > 0
+                  ? "border-[var(--color-error-border)]"
+                  : "border-[var(--color-accent)]"
+              }`}
+            />
+            {validationError.length > 0 ? (
+              <p
+                id="idea-error"
+                role="alert"
+                className="mt-2 border-l-2 border-[var(--color-error-border)] bg-[var(--color-error-bg)] px-3 py-2 text-sm font-semibold leading-6 text-[var(--color-error)]"
+              >
+                {validationError}
+              </p>
+            ) : null}
 
-                return (
-                  <button
-                    key={item.id}
-                    type="button"
-                    role="radio"
-                    aria-checked={isSelected}
-                    onClick={() => handleToneChange(item.id)}
-                    className={`min-h-12 rounded-md border px-3 py-2 text-center text-sm font-semibold transition ${
-                      isSelected
-                        ? "border-amber-500 bg-amber-400 text-zinc-950"
-                        : "border-zinc-300 bg-white text-zinc-800 hover:border-amber-400 hover:bg-amber-50"
-                    }`}
-                  >
-                    {item.label}
-                  </button>
-                );
-              })}
+            <div className="mt-7 border-t border-[var(--color-border)] pt-5">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-ochre)]">
+                2 Choose
+              </p>
+              <p id="situation-label" className="mt-3 text-sm font-semibold text-[var(--color-text)]">
+                Seminar situation
+              </p>
+              <div
+                role="radiogroup"
+                aria-labelledby="situation-label"
+                className="mt-2 grid gap-2 sm:grid-cols-2"
+              >
+                {situations.map((item) => {
+                  const isSelected = item.id === situation;
+
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      role="radio"
+                      aria-checked={isSelected}
+                      onClick={() => handleSituationChange(item.id)}
+                      className={`min-h-12 rounded-[4px] border border-l-4 px-3 py-2 text-left text-sm font-semibold transition-colors ${
+                        isSelected
+                          ? "border-[var(--color-accent)] border-l-[var(--color-accent)] bg-[var(--color-accent-tint)] text-[var(--color-accent)]"
+                          : "border-[var(--color-border)] border-l-transparent bg-transparent text-[var(--color-text)] hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-tint)]"
+                      }`}
+                    >
+                      {item.label}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-          </div>
 
-          <div className="mt-6">
-            <p id="prototype-note" className="text-sm leading-6 text-zinc-600">
-              Prototype mode: suggestions currently respond to the selected situation and tone, not
-              the exact meaning of your sentence.
-            </p>
-            <button
-              type="button"
-              onClick={generateSuggestions}
-              aria-describedby="prototype-note"
-              className="mt-3 inline-flex min-h-12 w-full items-center justify-center rounded-md bg-teal-700 px-4 py-3 text-base font-bold text-white transition hover:bg-teal-800 sm:w-auto"
+            <div className="mt-5">
+              <p id="tone-label" className="text-sm font-semibold text-[var(--color-text)]">
+                Tone
+              </p>
+              <div
+                role="radiogroup"
+                aria-labelledby="tone-label"
+                className="mt-2 grid gap-2 sm:grid-cols-3"
+              >
+                {tones.map((item) => {
+                  const isSelected = item.id === tone;
+
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      role="radio"
+                      aria-checked={isSelected}
+                      onClick={() => handleToneChange(item.id)}
+                      className={`min-h-12 rounded-[4px] border border-b-4 px-3 py-2 text-center text-sm font-semibold transition-colors ${
+                        isSelected
+                          ? "border-[var(--color-accent)] border-b-[var(--color-accent)] bg-[var(--color-accent-tint)] text-[var(--color-accent)]"
+                          : "border-[var(--color-border)] border-b-transparent bg-transparent text-[var(--color-text)] hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-tint)]"
+                      }`}
+                    >
+                      {item.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="mt-7 border-t border-[var(--color-border)] pt-5">
+              <p
+                id="prototype-note"
+                className="border-l-2 border-[var(--color-ochre)] bg-[var(--color-ochre-tint)] px-3 py-2 text-sm leading-6 text-[var(--color-muted)]"
+              >
+                Prototype mode: suggestions currently respond to the selected situation and tone,
+                not the exact meaning of your sentence.
+              </p>
+              <button
+                type="button"
+                onClick={generateSuggestions}
+                aria-describedby="prototype-note"
+                className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-[4px] border border-[var(--color-accent)] bg-[var(--color-accent)] px-5 py-3 text-base font-bold text-white transition-colors hover:bg-[#172D4A] active:bg-[#10233D] disabled:cursor-not-allowed disabled:border-[var(--color-border)] disabled:bg-[var(--color-border)] disabled:text-[var(--color-muted)] sm:w-auto"
+              >
+                Generate expressions
+              </button>
+            </div>
+          </section>
+
+          <section
+            aria-labelledby="suggestions-title"
+            className="border-t border-[var(--color-result-border)] bg-[var(--color-result-surface)] p-4 sm:p-6 lg:border-t-0 lg:p-7"
+          >
+            <div
+              className={`pb-5 ${
+                hasGenerated
+                  ? "border-b border-[var(--color-result-border)]"
+                  : "border-l-2 border-[var(--color-ochre)] pl-4"
+              }`}
             >
-              Generate expressions
-            </button>
-          </div>
-        </section>
-
-        <section aria-labelledby="suggestions-title" className="space-y-4">
-          <div className="flex flex-col gap-3 rounded-lg border border-zinc-200 bg-white p-4 shadow-soft sm:flex-row sm:items-center sm:justify-between sm:p-5">
-            <div>
-              <p className="text-sm font-semibold text-teal-800">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-ochre)]">
+                3 Review
+              </p>
+              <p className="mt-2 text-sm font-semibold text-[var(--color-accent)]">
                 {hasGenerated ? `${selectedSituation?.label} | ${selectedTone?.label}` : "Results"}
               </p>
-              <h2 id="suggestions-title" className="mt-1 text-xl font-bold text-zinc-950">
+              <h2
+                id="suggestions-title"
+                className="font-editorial-serif mt-1 text-2xl leading-tight text-[var(--color-text)]"
+              >
                 {hasGenerated
                   ? "Suggested expressions"
                   : "Your seminar-ready expressions will appear here."}
               </h2>
+              <p className="mt-3 max-w-lg text-sm leading-6 text-[var(--color-muted)]">
+                {hasGenerated
+                  ? "Each option is ready to copy and adapt in your own voice."
+                  : "Enter your idea, choose a situation and tone, then generate suggestions."}
+              </p>
             </div>
-            <p className="max-w-sm text-sm leading-6 text-zinc-600">
-              {hasGenerated
-                ? "Each option is ready to copy and adapt in your own voice."
-                : "Enter your idea, choose a situation and tone, then generate suggestions."}
-            </p>
-          </div>
 
-          {hasGenerated ? (
-            <div className="space-y-3">
-              {suggestions.map((suggestion, index) => {
-                const isCopied = copiedId === suggestion.id;
+            {hasGenerated ? (
+              <div className="divide-y divide-[var(--color-result-border)]">
+                {suggestions.map((suggestion, index) => {
+                  const isCopied = copiedId === suggestion.id;
+                  const expressionNumber = String(index + 1).padStart(2, "0");
 
-                return (
-                  <article
-                    key={suggestion.id}
-                    className="rounded-lg border border-zinc-200 border-l-teal-700 bg-white p-4 shadow-soft"
-                  >
-                    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                      <div>
-                        <p className="text-sm font-bold text-amber-700">Option {index + 1}</p>
-                        <p className="mt-2 text-lg font-semibold leading-7 text-zinc-950">
-                          "{suggestion.expression}"
-                        </p>
+                  return (
+                    <article
+                      key={suggestion.id}
+                      className="bg-[var(--color-surface)] px-3 py-5 first:mt-5 first:pt-5 last:pb-5 sm:px-4"
+                    >
+                      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                        <div className="min-w-0">
+                          <p className="text-sm font-semibold text-[var(--color-ochre)]">
+                            Expression {expressionNumber}
+                          </p>
+                          <blockquote className="mt-3 border-l-2 border-[var(--color-ochre)] pl-4">
+                            <p className="font-editorial-serif text-xl leading-8 text-[var(--color-text)]">
+                              "{suggestion.expression}"
+                            </p>
+                          </blockquote>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => copySuggestion(suggestion)}
+                          className="inline-flex min-h-10 w-full shrink-0 items-center justify-center gap-2 rounded-[3px] border border-[var(--color-accent)] bg-transparent px-3 py-2 text-sm font-semibold text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent-tint)] sm:w-auto"
+                          aria-label={`Copy expression ${index + 1}`}
+                        >
+                          {isCopied ? (
+                            <Check aria-hidden="true" size={18} />
+                          ) : (
+                            <Copy aria-hidden="true" size={18} />
+                          )}
+                          {isCopied ? "Copied" : "Copy"}
+                        </button>
                       </div>
-                      <button
-                        type="button"
-                        onClick={() => copySuggestion(suggestion)}
-                        className="inline-flex min-h-10 w-full shrink-0 items-center justify-center gap-2 rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm font-semibold text-zinc-800 transition hover:border-teal-600 hover:bg-teal-50 sm:w-auto"
-                        aria-label={`Copy option ${index + 1}`}
-                      >
-                        {isCopied ? (
-                          <Check aria-hidden="true" size={18} className="text-teal-700" />
-                        ) : (
-                          <Copy aria-hidden="true" size={18} className="text-teal-700" />
-                        )}
-                        {isCopied ? "Copied" : "Copy"}
-                      </button>
-                    </div>
-                    <p className="mt-3 text-sm leading-6 text-zinc-700">
-                      {suggestion.explanation}
-                    </p>
-                  </article>
-                );
-              })}
-            </div>
-          ) : null}
+                      <p className="mt-5 border-t border-[var(--color-border)] pt-3 text-sm leading-6 text-[var(--color-muted)]">
+                        <span className="font-semibold text-[var(--color-text)]">
+                          Editor's note:
+                        </span>{" "}
+                        {suggestion.explanation}
+                      </p>
+                    </article>
+                  );
+                })}
+              </div>
+            ) : null}
 
-          <p role="status" aria-live="polite" className="min-h-6 text-sm font-medium text-teal-800">
-            {copyMessage}
-          </p>
-        </section>
+            <p
+              role="status"
+              aria-live="polite"
+              className="min-h-6 pt-4 text-sm font-medium text-[var(--color-accent)]"
+            >
+              {copyMessage}
+            </p>
+          </section>
+        </div>
       </div>
     </main>
   );
