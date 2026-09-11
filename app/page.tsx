@@ -462,6 +462,11 @@ export default function Home() {
                 <h1 className="font-editorial-serif mt-1 text-3xl leading-tight text-[var(--color-text)] sm:text-4xl">
                   Speak up with seminar-ready English
                 </h1>
+                <p className="mt-3 max-w-2xl text-sm leading-6 text-[var(--color-muted)]">
+                  Find English expressions for common seminar situations. Choose a
+                  situation and tone, then explore phrases with explanations and
+                  copy one to adapt.
+                </p>
               </div>
             </div>
             <div className="inline-flex w-fit items-center gap-2 border-l-2 border-[var(--color-ochre)] pl-3 text-sm font-semibold text-[var(--color-accent)]">
@@ -488,13 +493,13 @@ export default function Home() {
               >
                 Your seminar moment
               </h2>
-              <p className="mt-2 text-sm leading-6 text-[var(--color-muted)]">
-                Chinese, English, or rough notes are fine.
-              </p>
             </div>
 
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-ochre)]">
-              1 Write
+              1 Write your idea
+            </p>
+            <p id="idea-help" className="mt-2 text-sm leading-6 text-[var(--color-muted)]">
+              Add a brief note about what you want to say. Chinese or English is fine.
             </p>
             <label
               htmlFor="idea"
@@ -509,13 +514,24 @@ export default function Home() {
               onChange={(event) => handleInputChange(event.target.value)}
               placeholder="Type the idea you want to express in the seminar."
               aria-invalid={validationError.length > 0}
-              aria-describedby={validationError.length > 0 ? "idea-error" : undefined}
+              aria-describedby={
+                validationError.length > 0
+                  ? "idea-help prototype-note idea-error"
+                  : "idea-help prototype-note"
+              }
               className={`mt-2 min-h-36 w-full resize-y rounded-[4px] border bg-[var(--color-surface)] px-3 py-3 text-base leading-7 text-[var(--color-text)] placeholder:text-[#7A7268] ${
                 validationError.length > 0
                   ? "border-[var(--color-error-border)]"
                   : "border-[var(--color-accent)]"
               }`}
             />
+            <p
+              id="prototype-note"
+              className="mt-3 border-l-2 border-[var(--color-ochre)] bg-[var(--color-ochre-tint)] px-3 py-2 text-sm leading-6 text-[var(--color-muted)]"
+            >
+              This demo shows preset expressions based on your situation and tone.
+              Your note helps you plan what to say; it is not analysed or rewritten.
+            </p>
             {validationError.length > 0 ? (
               <p
                 id="idea-error"
@@ -528,7 +544,10 @@ export default function Home() {
 
             <div className="mt-7 border-t border-[var(--color-border)] pt-5">
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-ochre)]">
-                2 Choose
+                2 Choose a situation and tone
+              </p>
+              <p className="mt-2 text-sm leading-6 text-[var(--color-muted)]">
+                Select what you want to do in the discussion and how you want to sound.
               </p>
               <p id="situation-label" className="mt-3 text-sm font-semibold text-[var(--color-text)]">
                 Seminar situation
@@ -594,18 +613,11 @@ export default function Home() {
             </div>
 
             <div className="mt-7 border-t border-[var(--color-border)] pt-5">
-              <p
-                id="prototype-note"
-                className="border-l-2 border-[var(--color-ochre)] bg-[var(--color-ochre-tint)] px-3 py-2 text-sm leading-6 text-[var(--color-muted)]"
-              >
-                Prototype mode: suggestions currently respond to the selected situation and tone,
-                not the exact meaning of your sentence.
-              </p>
               <button
                 type="button"
                 onClick={generateSuggestions}
                 aria-describedby="prototype-note"
-                className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-[4px] border border-[var(--color-accent)] bg-[var(--color-accent)] px-5 py-3 text-base font-bold text-white transition-colors hover:bg-[#172D4A] active:bg-[#10233D] disabled:cursor-not-allowed disabled:border-[var(--color-border)] disabled:bg-[var(--color-border)] disabled:text-[var(--color-muted)] sm:w-auto"
+                className="inline-flex min-h-12 w-full items-center justify-center rounded-[4px] border border-[var(--color-accent)] bg-[var(--color-accent)] px-5 py-3 text-base font-bold text-white transition-colors hover:bg-[#172D4A] active:bg-[#10233D] disabled:cursor-not-allowed disabled:border-[var(--color-border)] disabled:bg-[var(--color-border)] disabled:text-[var(--color-muted)] sm:w-auto"
               >
                 Generate expressions
               </button>
@@ -624,7 +636,7 @@ export default function Home() {
               }`}
             >
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-ochre)]">
-                3 Review
+                3 Generate, review and copy
               </p>
               <p className="mt-2 text-sm font-semibold text-[var(--color-accent)]">
                 {hasGenerated ? `${selectedSituation?.label} | ${selectedTone?.label}` : "Results"}
@@ -640,7 +652,7 @@ export default function Home() {
               <p className="mt-3 max-w-lg text-sm leading-6 text-[var(--color-muted)]">
                 {hasGenerated
                   ? "Each option is ready to copy and adapt in your own voice."
-                  : "Enter your idea, choose a situation and tone, then generate suggestions."}
+                  : "Click Generate expressions, read the explanations, then copy a phrase to adapt."}
               </p>
             </div>
 
